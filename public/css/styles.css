@@ -4,3 +4,209 @@
 *:after {
   box-sizing: border-box;
 }
+
+/* font and color variables */
+:root {
+  --heading-font: Georgia, serif;
+  --body-font: Arial, sans-serif;
+
+  --primary-midnight-color: #1a1d23;
+  --primary-white-color: #ffffff;
+  --accent-red-color: #d33766;
+  --accent-link-red-color: #d33766;
+}
+
+html {
+  background-image: url("../images/site/checkerboard.jpg");
+  background-size: auto;
+  font-family: var(--body-font);
+}
+
+body {
+  margin: 15px 100px;
+  padding: 15px;
+  background-color: white;
+  border: solid 5px var(--accent-red-color);
+  border-radius: 8px;
+  max-width: 1250px;
+}
+
+header {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--heading-font);
+}
+
+#header-title {
+  font-family: var(--body-font);
+  text-decoration: none;
+  color: var(--primary-midnight-color);
+  font-size: 2.7rem;
+}
+
+#tools * {
+  font-family: var(--body-font);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--primary-midnight-color);
+}
+
+
+h1, h2, nav {
+  font-family: var(--heading-font);
+}
+
+nav {
+  background-color: var(--primary-midnight-color);
+  padding: 4px;
+}
+
+nav ul {
+  display: flex;
+  padding: 0;
+  justify-content: space-around;
+  color: var(--primary-white-color);
+  list-style: none;
+}
+
+
+/* delorean header ad */
+#delorean-ad {
+  position: relative;
+  display: block;
+  color: var(--accent-red-color);
+  margin-top: 10px;
+  margin-bottom: 40px;
+}
+
+#hero-delorean {
+  display: block;
+  margin: 0 auto;
+}
+
+#delorean-details {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.75);
+  padding: 15px;
+  font-weight: bolder;
+}
+
+#delorean-details p {
+  font-size: 1.1rem;
+  ;line-height: 10px;
+}
+
+button {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+
+  background-color: var(--accent-red-color);
+  padding: 10px;
+  border: none;
+}
+
+
+/* Upgrades and Reviews */
+#information-grid, #upgrades-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px 10px;
+
+}
+
+.upgrade-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100px;
+  text-align: center;
+}
+
+.img-container {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  background-color: var(--primary-midnight-color);
+}
+
+.img-container img {
+  
+}
+
+.upgrade-card a {
+
+}
+
+#reviews li {
+  margin-bottom: 14px;
+}
+
+
+
+footer {
+  margin-top: 45px;
+  margin-bottom: -20px;
+}
+
+@media (max-width: 768px) {
+  html {
+    background-image: none;
+    font-size: .9rem;
+  }
+
+  body {
+    margin: 0;
+    border: none;
+    border-radius: none;
+  }
+
+  nav ul {
+    justify-content: space-between;
+    padding: 0px 10px;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+  }
+
+  #hero-delorean {
+    width: 80%;
+  }
+
+  #delorean-ad {
+    min-height: 180px;
+  }
+
+  #delorean-details {
+    font-size: .8rem;
+    padding: 5px 2px;
+  }
+
+  #information-grid {
+    grid-template-columns: none;
+    grid-template-rows: auto;
+    gap: 10px;
+  }
+
+  button {
+    padding: 5px;
+    min-width: 80%;
+  }
+
+  #reviews {
+    grid-row: 1 / 2;
+  }
+}
+
+@media (min-width: 1450px) {
+  body {
+    width: 1250px;
+    margin: 15px auto;
+  }
+}
