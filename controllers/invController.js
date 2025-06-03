@@ -19,4 +19,22 @@ invCont.buildByClassificationId = async function (req, res, next) {
   })
 }
 
- module.exports = invCont
+/* ***************************
+ *  Build inventory list view
+ * ************************** */
+invCont.buildInventoryList = async function (req, res, next) {
+  try {
+    const data = await invModel.getAllInventory()
+    const grid = await utilities.buildClassificationGrid(data)
+    const nav = await utilities.getNav()
+    res.render("./inventory/inventory", {
+      title: "Inventory List",
+      nav,
+      grid,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = invCont

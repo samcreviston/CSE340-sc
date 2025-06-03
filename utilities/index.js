@@ -57,15 +57,21 @@ Util.buildClassificationGrid = async function(data){
   return grid
 }
 
-/* **************************************
-//build the item details view for a single item
-* ************************************ */
 Util.buildItemDetails = async function(data){
-  let details
-  if(data.length > 0){
-    details = '<section id="item-details">'
-    details += '
+  let details = ''
+  if(data){
+    details += '<section id="item-details">'
+    details += '<h2>' + data.inv_year + ' ' + data.inv_make + ' ' + data.inv_model + '</h2>'
+    details += '<img src="' + data.inv_thumbnail + '" alt="Image of ' + data.inv_make + ' ' + data.inv_model + '" />'
+    details += '<p><strong>Description:</strong> ' + data.inv_description + '</p>'
+    details += '<p><strong>Price:</strong> $' + new Intl.NumberFormat('en-US').format(data.inv_price) + '</p>'
+    details += '<p><strong>Miles:</strong> ' + new Intl.NumberFormat('en-US').format(data.inv_miles) + '</p>'
+    details += '<p><strong>Color:</strong> ' + data.inv_color + '</p>'
+    details += '</section>'
+  } else {
+    details = '<p class="notice">Sorry, no vehicle details could be found.</p>'
+  }
+  return details
 }
 
-
-module.exports = Util;
+module.exports = Util

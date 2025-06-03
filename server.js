@@ -12,6 +12,7 @@ const app = express()
 const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
+const itemRoute = require("./routes/itemRoute")
 
 /* ***********************
  * View Engine aand Templates
@@ -29,6 +30,7 @@ app.get("/", baseController.buildHome)
 
 // Inventory routes
 app.use("/inv", inventoryRoute)
+app.use("/inv", itemRoute)
 
 /* ***********************
  * Local Server Information
