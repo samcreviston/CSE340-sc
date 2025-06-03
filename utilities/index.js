@@ -57,5 +57,15 @@ Util.buildClassificationGrid = async function(data){
   return grid
 }
 
+/* **************************************
+//build the item details view for a single item
+* ************************************ */
+Util.buildItemDetails = async function(data){
+  let details
+  if(data.length > 0){
+    details = '<section id="item-details">'
+    details += '
+}
 
-module.exports = Util
+
+module.exports = Util;
