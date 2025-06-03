@@ -13,6 +13,8 @@ const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
 const itemRoute = require("./routes/itemRoute")
+const errorRoute = require("./routes/errorRoute")
+const errorHandler = require("./utilities/errorHandler")
 
 /* ***********************
  * View Engine aand Templates
@@ -31,6 +33,11 @@ app.get("/", baseController.buildHome)
 // Inventory routes
 app.use("/inv", inventoryRoute)
 app.use("/inv", itemRoute)
+
+app.use(errorRoute)
+
+// Error handling middleware - must be last
+app.use(errorHandler)
 
 /* ***********************
  * Local Server Information
