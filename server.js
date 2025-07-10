@@ -15,6 +15,7 @@ const inventoryRoute = require("./routes/inventoryRoute")
 const itemRoute = require("./routes/itemRoute")
 const errorRoute = require("./routes/errorRoute")
 const errorHandler = require("./utilities/errorHandler")
+const managementRoute = require("./routes/managementRoute")
 
 /* ***********************
  * View Engine aand Templates
@@ -22,6 +23,19 @@ const errorHandler = require("./utilities/errorHandler")
 app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout", "./layouts/layout") // not at views root
+
+const util = require('./utilities') // adjust path if needed
+
+app.use(async (req, res, next) => {
+  try {
+    const nav = await util.getNav()
+    res.locals.nav = nav // This makes nav available in all views
+    next()
+  } catch (err) {
+    next(err)
+  }
+})
+
 
 /* ***********************
  * Routes
@@ -33,6 +47,7 @@ app.get("/", baseController.buildHome)
 // Inventory routes
 app.use("/inv", inventoryRoute)
 app.use("/inv", itemRoute)
+app.use("/inv", managementRoute)
 
 app.use(errorRoute)
 
