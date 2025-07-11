@@ -25,6 +25,9 @@ app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout", "./layouts/layout")
 
+// Add body parsing middleware to parse URL-encoded form data
+app.use(express.urlencoded({ extended: true }))
+
 const util = require('./utilities')
 
 app.use(async (req, res, next) => {

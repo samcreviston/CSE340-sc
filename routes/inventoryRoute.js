@@ -7,6 +7,6 @@ const invController = require("../controllers/invController")
 router.get("/type/:classificationId", invController.buildByClassificationId);
 
 router.post(
-  "/add-classification/:classification_name", invController.addClassification);
+  "/add-classification", invController.addClassification);
 
 module.exports = router;
