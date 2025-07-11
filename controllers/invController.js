@@ -1,5 +1,6 @@
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/")
+const addClassificationModel = require("../models/add-classification-model")
 
 const invCont = {}
 
@@ -32,6 +33,25 @@ invCont.buildInventoryList = async function (req, res, next) {
       nav,
       grid,
     })
+  } catch (error) {
+    next(error)
+  }
+}
+
+/* ***************************
+ *  Add a new classification
+ * ************************** */
+invCont.addClassification = async function (req, res, next) {
+  try {
+    const classification_name = req.params.classification_name
+    const result = await addClassificationModel.addClassification(classification_name)
+    if (result) {
+      req.flash("message", "Classification added successfully")
+      res.redirect("/inv")
+    } else {
+      req.flash("message", "Failed to add classification")
+      res.redirect("/inv/add-classification")
+    }
   } catch (error) {
     next(error)
   }

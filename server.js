@@ -16,15 +16,16 @@ const itemRoute = require("./routes/itemRoute")
 const errorRoute = require("./routes/errorRoute")
 const errorHandler = require("./utilities/errorHandler")
 const managementRoute = require("./routes/managementRoute")
+const addClassificationRoute = require("./routes/addClassificationRoute")
 
 /* ***********************
  * View Engine aand Templates
  *************************/
 app.set("view engine", "ejs")
 app.use(expressLayouts)
-app.set("layout", "./layouts/layout") // not at views root
+app.set("layout", "./layouts/layout")
 
-const util = require('./utilities') // adjust path if needed
+const util = require('./utilities')
 
 app.use(async (req, res, next) => {
   try {
@@ -48,6 +49,7 @@ app.get("/", baseController.buildHome)
 app.use("/inv", inventoryRoute)
 app.use("/inv", itemRoute)
 app.use("/inv", managementRoute)
+app.use("/inv", addClassificationRoute)
 
 app.use(errorRoute)
 
