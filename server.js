@@ -17,6 +17,7 @@ const errorRoute = require("./routes/errorRoute")
 const errorHandler = require("./utilities/errorHandler")
 const managementRoute = require("./routes/managementRoute")
 const addClassificationRoute = require("./routes/addClassificationRoute")
+const cookieParser = require("cookie-parser")
 
 /* ***********************
  * View Engine aand Templates
@@ -55,6 +56,7 @@ app.use("/inv", managementRoute)
 app.use("/inv", addClassificationRoute)
 
 app.use(errorRoute)
+app.use(cookieParser())
 
 // Error handling middleware - must be last
 app.use(errorHandler)
