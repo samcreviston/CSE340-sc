@@ -6,6 +6,8 @@
  * Require Statements
  *************************/
 const express = require("express")
+const session = require("express-session")
+const pool = require('./database/')
 const expressLayouts = require("express-ejs-layouts")
 const env = require("dotenv").config()
 const app = express()
@@ -18,6 +20,8 @@ const errorHandler = require("./utilities/errorHandler")
 const managementRoute = require("./routes/managementRoute")
 const addClassificationRoute = require("./routes/addClassificationRoute")
 const cookieParser = require("cookie-parser")
+const util = require('./utilities')
+
 
 /* ***********************
  * View Engine aand Templates
@@ -26,11 +30,28 @@ app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout", "./layouts/layout")
 
-// Add body parsing middleware to parse URL-encoded form data
+
+/* ***********************
+ * Middleware
+ * ************************/
+//body parsing middleware to parse URL-encoded form data
 app.use(express.urlencoded({ extended: true }))
 
-const util = require('./utilities')
 
+//session management middleware
+ app.use(session({
+  store: new (require('connect-pg-simple')(session))({
+    createTableIfMissing: true,
+    pool,
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  name: 'sessionId',
+}))
+
+
+//make nav available to all views
 app.use(async (req, res, next) => {
   try {
     const nav = await util.getNav()
