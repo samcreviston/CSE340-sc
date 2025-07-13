@@ -101,9 +101,7 @@ nav ul {
 }
 
 button {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  justify-self: center;
 
   background-color: var(--accent-red-color);
   padding: 10px;

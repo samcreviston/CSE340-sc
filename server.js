@@ -15,6 +15,7 @@ const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
 const itemRoute = require("./routes/itemRoute")
+const accountRoute = require("./routes/accountRoute")
 const errorRoute = require("./routes/errorRoute")
 const errorHandler = require("./utilities/errorHandler")
 const managementRoute = require("./routes/managementRoute")
@@ -57,6 +58,8 @@ app.use(function(req, res, next){
   res.locals.messages = require('express-messages')(req, res)
   next()
 })
+//now I can simply model after the below example to add a flash message where <%- messages() %> is located in the view
+//req.flash("notice", "This is a flash message.")
 
 
 //make nav available to all views
@@ -79,6 +82,7 @@ app.use(static)
 app.get("/", baseController.buildHome)
 
 // Inventory routes
+app.use("/account", accountRoute)
 app.use("/inv", inventoryRoute)
 app.use("/inv", itemRoute)
 app.use("/inv", managementRoute)
