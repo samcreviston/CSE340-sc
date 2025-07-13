@@ -71,6 +71,10 @@ nav ul {
   list-style: none;
 }
 
+form label{
+  display: block;
+}
+
 
 /* delorean header ad */
 #delorean-ad {
