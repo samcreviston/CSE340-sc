@@ -5,6 +5,10 @@ const accountController = require("../controllers/accountController")
 //login page route
 router.get("/login", accountController.buildLogin);
 
+// Process the login request
+router.post(
+  "/login", accountController.accountLogin);
+
 //register page route
 router.get("/register", accountController.buildRegister);
 

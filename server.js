@@ -73,7 +73,6 @@ app.use(async (req, res, next) => {
   }
 })
 
-
 /* ***********************
  * Routes
  *************************/
@@ -90,6 +89,8 @@ app.use("/inv", addClassificationRoute)
 
 app.use(errorRoute)
 app.use(cookieParser())
+//Authenticate JWT tokens on all routes
+app.use(util.checkJWTToken)
 
 // Error handling middleware - must be last
 app.use(errorHandler)
