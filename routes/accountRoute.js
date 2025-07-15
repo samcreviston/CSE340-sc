@@ -8,4 +8,7 @@ router.get("/login", accountController.buildLogin);
 //register page route
 router.get("/register", accountController.buildRegister);
 
+//register creat user route
+router.post("/register", accountController.registerAccount);
+
 module.exports = router;
