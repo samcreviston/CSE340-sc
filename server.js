@@ -38,7 +38,6 @@ app.set("layout", "./layouts/layout")
 //body parsing middleware to parse URL-encoded form data
 app.use(express.urlencoded({ extended: true }))
 
-
 //session management middleware
  app.use(session({
   store: new (require('connect-pg-simple')(session))({
@@ -51,7 +50,6 @@ app.use(express.urlencoded({ extended: true }))
   name: 'sessionId',
 }))
 
-
 // Express Messages Middleware
 app.use(require('connect-flash')())
 app.use(function(req, res, next){
@@ -60,7 +58,6 @@ app.use(function(req, res, next){
 })
 //now I can simply model after the below example to add a flash message where <%- messages() %> is located in the view
 //req.flash("notice", "This is a flash message.")
-
 
 //make nav available to all views
 app.use(async (req, res, next) => {
@@ -72,6 +69,12 @@ app.use(async (req, res, next) => {
     next(err)
   }
 })
+
+// Use cookie-parser middleware before JWT check and routes
+app.use(cookieParser())
+
+//Authenticate JWT tokens on all routes
+app.use(util.checkJWTToken)
 
 /* ***********************
  * Routes
@@ -88,9 +91,6 @@ app.use("/inv", managementRoute)
 app.use("/inv", addClassificationRoute)
 
 app.use(errorRoute)
-app.use(cookieParser())
-//Authenticate JWT tokens on all routes
-app.use(util.checkJWTToken)
 
 // Error handling middleware - must be last
 app.use(errorHandler)
@@ -108,3 +108,6 @@ const host = process.env.HOST
 app.listen(port, () => {
   console.log(`app listening on ${host}:${port}`)
 })
+
+// Notes on how authentication works:
+// https://byui-cse.github.io/cse340-ww-content/views/login.html
