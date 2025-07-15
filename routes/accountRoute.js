@@ -1,9 +1,10 @@
 const express = require("express")
 const router = new express.Router()
-const accountController = require("../controllers/accountController")
+const accountController = require("../controllers/accountController");
+const util = require("../utilities");
 
 // Default account management route
-router.get("/", accountController.buildAccountManagement);
+router.get("/", util.checkLogin, accountController.buildAccountManagement);
 
 //login page route
 router.get("/login", accountController.buildLogin);

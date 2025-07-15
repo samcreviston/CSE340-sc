@@ -101,7 +101,7 @@ Util.buildClassificationList = async function (classification_id = null) {
 
 
 /* ****************************************
-* Middleware to check token validity
+* Middleware to Check token validity
 **************************************** */
 Util.checkJWTToken = (req, res, next) => {
  if (req.cookies.jwt) {
@@ -122,6 +122,18 @@ Util.checkJWTToken = (req, res, next) => {
   next()
  }
 }
+
+/* ****************************************
+ *  Middleware to Check Login
+ * ************************************ */
+ Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    next()
+  } else {
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login")
+  }
+ }
 
 
 module.exports = Util
