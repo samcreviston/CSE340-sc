@@ -19,4 +19,10 @@ router.get("/register", accountController.buildRegister);
 //register creat user route
 router.post("/register", accountController.registerAccount);
 
+// Route for update account information
+router.get("/update/:id", util.checkLogin, accountController.buildUpdateAccount);
+
+// Route for logout
+router.get("/logout", accountController.accountLogout);
+
 module.exports = router;
