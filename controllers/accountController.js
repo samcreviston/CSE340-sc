@@ -1,7 +1,8 @@
- const utilities = require("../utilities/")
+const utilities = require("../utilities/")
 const accountModel = require("../models/account-model")
 const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
+const { validationResult } = require("express-validator")
 require("dotenv").config()
 
 
@@ -150,6 +151,120 @@ async function buildUpdateAccount(req, res, next) {
     next(error)
   }
 }
+
+// POST handler for account info update
+async function postUpdateAccount(req, res, next) {
+  let nav = await utilities.getNav()
+  const { account_id, account_firstname, account_lastname, account_email } = req.body
+
+  // Validate input
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    // Return errors and sticky form data
+    try {
+      const account = await accountModel.getAccountById(account_id)
+      return res.status(400).render("account/updateAccount", {
+        title: "Update Account Information",
+        nav,
+        account,
+        errors: errors.array(),
+        messages: req.flash(),
+        account_firstname,
+        account_lastname,
+        account_email,
+      })
+    } catch (error) {
+      return next(error)
+    }
+  }
+
+  try {
+    // Check if email is changed and already exists
+    const existingAccount = await accountModel.getAccountByEmail(account_email)
+    if (existingAccount && existingAccount.account_id != account_id) {
+      req.flash("error", "Email address is already in use.")
+      const account = await accountModel.getAccountById(account_id)
+      return res.status(400).render("account/updateAccount", {
+        title: "Update Account Information",
+        nav,
+        account,
+        errors: [{ msg: "Email address is already in use." }],
+        messages: req.flash(),
+        account_firstname,
+        account_lastname,
+        account_email,
+      })
+    }
+
+    // Update account info
+    const updateResult = await accountModel.updateAccountInfo(account_id, account_firstname, account_lastname, account_email)
+    if (updateResult.rowCount === 1) {
+      req.flash("success", "Account information updated successfully.")
+    } else {
+      req.flash("error", "Failed to update account information.")
+    }
+
+    // Get updated account data
+    const updatedAccount = await accountModel.getAccountById(account_id)
+    res.render("account/account", {
+      title: "Account Management",
+      nav,
+      accountData: updatedAccount,
+      errors: null,
+      messages: req.flash(),
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+// POST handler for password change
+async function postChangePassword(req, res, next) {
+  let nav = await utilities.getNav()
+  const { account_id, new_password } = req.body
+
+  // Validate input
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    try {
+      const account = await accountModel.getAccountById(account_id)
+      return res.status(400).render("account/updateAccount", {
+        title: "Update Account Information",
+        nav,
+        account,
+        errors: errors.array(),
+        messages: req.flash(),
+      })
+    } catch (error) {
+      return next(error)
+    }
+  }
+
+  try {
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(new_password, 10)
+    // Update password in DB
+    const updateResult = await accountModel.updatePassword(account_id, hashedPassword)
+    if (updateResult.rowCount === 1) {
+      req.flash("success", "Password updated successfully.")
+    } else {
+      req.flash("error", "Failed to update password.")
+    }
+
+    // Get updated account data
+    const updatedAccount = await accountModel.getAccountById(account_id)
+    res.render("account/account", {
+      title: "Account Management",
+      nav,
+      accountData: updatedAccount,
+      errors: null,
+      messages: req.flash(),
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 
 /* ****************************************
 *  Deliver login view
@@ -305,4 +420,4 @@ async function accountLogout(req, res, next) {
   res.redirect("/")
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountManagement, buildUpdateAccount, accountLogout }
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountManagement, buildUpdateAccount, accountLogout, postUpdateAccount, postChangePassword }

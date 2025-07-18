@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <main>
+    <h1><%= title %></h1>
+
+    <% if (messages && Object.keys(messages).length > 0) { %>
+      <div class="messages">
+        <% Object.keys(messages).forEach(function(type) { %>
+          <% messages[type].forEach(function(message) { %>
+            <p class="<%= type %>"><%= message %></p>
+          <% }) %>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <% if (errors && errors.length > 0) { %>
+      <div class="errors">
+        <ul>
+          <% errors.forEach(function(error) { %>
+            <li><%= error.msg %></li>
+          <% }) %>
+        </ul>
+      </div>
+    <% } %>
+
+    <!-- Account Update Form -->
+    <section>
+      <h2>Account Update</h2>
+      <form id="accountUpdateForm" method="POST" action="/account/update-account">
+        <input type="hidden" name="account_id" value="<%= account.account_id %>" />
+
+        <label for="account_firstname">First Name:</label>
+        <input
+          type="text"
+          id="account_firstname"
+          name="account_firstname"
+          required
+          value="<%= typeof account_firstname !== 'undefined' ? account_firstname : account.account_firstname %>"
+        />
+
+        <label for="account_lastname">Last Name:</label>
+        <input
+          type="text"
+          id="account_lastname"
+          name="account_lastname"
+          required
+          value="<%= typeof account_lastname !== 'undefined' ? account_lastname : account.account_lastname %>"
+        />
+
+        <label for="account_email">Email Address:</label>
+        <input
+          type="email"
+          id="account_email"
+          name="account_email"
+          required
+          value="<%= typeof account_email !== 'undefined' ? account_email : account.account_email %>"
+        />
+
+        <input type="submit" value="Update Account" />
+      </form>
+    </section>
+
+    <!-- Change Password Form -->
+    <section>
+      <h2>Change Password</h2>
+      <form id="changePasswordForm" method="POST" action="/account/change-password">
+        <input type="hidden" name="account_id" value="<%= account.account_id %>" />
+
+        <label for="new_password">New Password:</label>
+        <input
+          type="password"
+          id="new_password"
+          name="new_password"
+          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+          title="Password must be at least 8 characters and include at least one uppercase letter, one lowercase letter, and one number."
+          autocomplete="new-password"
+        />
+        <p>
+          Enter a new password to change your current password. Password must be at least 8 characters and include at least one uppercase letter, one lowercase letter, and one number.
+        </p>
+
+        <input type="submit" value="Change Password" />
+      </form>
+    </section>
+  </main>
+</body>
+</html>

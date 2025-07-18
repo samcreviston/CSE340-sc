@@ -154,4 +154,45 @@ Util.checkJWTToken = (req, res, next) => {
  }
 
 
+const { body } = require("express-validator")
+const accountModel = require("../models/account-model")
+
+/* ****************************************
+ * Validation middleware for account update
+ * **************************************** */
+Util.validateAccountUpdate = [
+  body("account_firstname")
+    .trim()
+    .notEmpty()
+    .withMessage("First name is required."),
+  body("account_lastname")
+    .trim()
+    .notEmpty()
+    .withMessage("Last name is required."),
+  body("account_email")
+    .trim()
+    .notEmpty()
+    .withMessage("Email is required.")
+    .isEmail()
+    .withMessage("Please provide a valid email address."),
+]
+
+/* ****************************************
+ * Validation middleware for password change
+ * **************************************** */
+Util.validatePasswordChange = [
+  body("new_password")
+    .trim()
+    .notEmpty()
+    .withMessage("New password is required.")
+    .isLength({ min: 8 })
+    .withMessage("Password must be at least 8 characters.")
+    .matches(/[A-Z]/)
+    .withMessage("Password must contain at least one uppercase letter.")
+    .matches(/[a-z]/)
+    .withMessage("Password must contain at least one lowercase letter.")
+    .matches(/\d/)
+    .withMessage("Password must contain at least one number."),
+]
+
 module.exports = Util
