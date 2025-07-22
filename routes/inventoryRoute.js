@@ -15,4 +15,7 @@ router.post("/add-inventory", util.checkAdminEmployee, invController.addInventor
 router.post(
   "/add-classification", util.checkAdminEmployee, invController.addClassification);
 
+// Route to handle search requests
+router.get("/search", invController.searchInventory);
+
 module.exports = router;

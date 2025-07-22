@@ -196,4 +196,27 @@ invCont.buildManagement = async function (req, res, next) {
   }
 }
 
+
+invCont.searchInventory = async function (req, res, next) {
+  try {
+    const searchQuery = req.query.q
+    if (!searchQuery) {
+      res.redirect("/inv")
+      return
+    }
+    const data = await invModel.searchInventoryByMakeOrModel(searchQuery)
+    // buildClassificationGrid returns a string of HTML, but the view expects an array for forEach
+    // So pass data directly as grid
+    const nav = await utilities.getNav()
+    res.render("inventory/search", {
+      title: `Search results for "${searchQuery}"`,
+      nav,
+      grid: data,
+      searchQuery,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 module.exports = invCont

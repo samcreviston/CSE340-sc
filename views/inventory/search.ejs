@@ -1,0 +1,26 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<%- include('../partials/navigation') %>
+
+<main>
+  <h1>Search Results for "<%= searchQuery %>"</h1>
+
+  <% if (grid && grid.length > 0) { %>
+    <div class="inventory-grid">
+      <% grid.forEach(function(item) { %>
+        <div class="inventory-item">
+          <a href="/inv/item/<%= item.inv_id %>">
+            <img src="<%= item.inv_thumbnail %>" alt="<%= item.inv_make %> <%= item.inv_model %>">
+            <h2><%= item.inv_make %> <%= item.inv_model %></h2>
+          </a>
+          <p>Price: $<%= Number(item.inv_price).toFixed(2) %></p>
+          <p>Year: <%= item.inv_year %></p>
+          <p>Miles: <%= Number(item.inv_miles).toLocaleString() %></p>
+          <p>Color: <%= item.inv_color %></p>
+        </div>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <p>No vehicles found matching your search.</p>
+  <% } %>
+</main>

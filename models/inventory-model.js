@@ -42,4 +42,24 @@ async function addInventory(inv_make, inv_model, inv_description, inv_image, inv
   }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId, addInventory}
+/* ***************************
+ *  Search inventory by make or model
+ * ************************** */
+async function searchInventoryByMakeOrModel(query) {
+  try {
+    const sql = `
+      SELECT i.*, c.classification_name
+      FROM public.inventory AS i
+      JOIN public.classification AS c ON i.classification_id = c.classification_id
+      WHERE i.inv_make ILIKE $1 OR i.inv_model ILIKE $1
+    `
+    const values = ['%' + query + '%']
+    const data = await pool.query(sql, values)
+    return data.rows
+  } catch (error) {
+    console.error("searchInventoryByMakeOrModel error " + error)
+    return []
+  }
+}
+
+module.exports = {getClassifications, getInventoryByClassificationId, addInventory, searchInventoryByMakeOrModel}
